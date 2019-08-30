@@ -1,0 +1,15 @@
+{
+    "id": "{584619EE-28B5-5FE7-99CF-34AFC5E50F16}",
+    "name": "StromAbrechnungsModul",
+    "type": 3,
+    "vendor": "",
+    "aliases":
+    [
+        "StromAbrechnungsModul"
+    ],  
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "SA",
+    "url": "https://github.com/symcon/StromAbrechnungsModul/tree/master/StromAbrechnungsModul"
+}

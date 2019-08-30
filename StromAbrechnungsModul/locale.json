@@ -1,0 +1,22 @@
+{
+    "translations": {
+        "de": {
+            "Source": "Quelle", 
+            "base price": "Grundpreis",
+            "euro/year": "Euro/Jahr",
+            "labor price": "Arbeitspreis",
+            "Meter reading date": "Ablesedatum",
+            "last meter reading": "letzter Zählerstand",
+            "planned consumption": "geplanter Verbrauch",
+            "kWh/year": "kWh/Jahr",
+            "meter number": "Zählernummer",
+            "days until next reading": "Tage bis zur nächsten Ablesung",
+            "planned consumption/day": "Geplanter Verbrauch/Tag",
+            "meter reading (target)": "Zählerstand(Soll)",
+            "meter reading": "Zählerstand",
+            "credit note/back payment": "Gutschrift/Rückzahlung",
+            "average consumption of the last 30 days": "durchschnittlicher Verbrauch der letzten 30 Tage ",
+            "power price": "Energiepreis"
+        }
+    }
+}

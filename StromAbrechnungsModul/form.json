@@ -1,0 +1,12 @@
+{
+    "elements":
+    [
+        {"type": "SelectVariable", "name": "Source", "caption": "Source"},
+        {"type": "NumberSpinner","name": "BasePrice", "caption": "base price", "digits": 2, "suffix": "euro/year"},
+        {"type": "NumberSpinner","name": "LaborPrice", "caption": "labor price", "digits": 2, "suffix": "ct/kWh"},
+        {"type": "SelectDate", "name": "ReadingDate", "caption": "Meter reading date"},
+        {"type": "NumberSpinner","name": "LastMeterReading", "caption": "last meter reading", "suffix": "kWh"},
+        {"type": "NumberSpinner","name": "PlannedConsumptionYear", "caption": "planned consumption", "suffix": "kWh/year"},
+        {"type": "NumberSpinner","name": "MeterNumber", "caption": "meter number"}
+    ]
+}
