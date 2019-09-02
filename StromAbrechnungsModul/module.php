@@ -6,14 +6,13 @@
             parent::Create();
 
             //Proprties
-            $this->RegisterPropertyInteger("Source", 26492);
+            $this->RegisterPropertyInteger("Source", 0);
             $this->RegisterPropertyFloat("BasePrice", 71.76);
             $this->RegisterPropertyFloat("LaborPrice", 22.57);
             $this->RegisterPropertyString("ReadingDate", '{"year":2019,"month":1,"day":1}');
             $this->RegisterPropertyInteger("LastMeterReading", 70518);
             $this->RegisterPropertyInteger("PlannedConsumptionYear", 4250);
-            $this->RegisterPropertyInteger("MeterNumber",000000000);
-            $this->RegisterPropertyInteger("AverageBase", 30);
+            //$this->RegisterPropertyInteger("AverageBase", 30);
 
 
             //Profiles
@@ -46,7 +45,12 @@
             //Never delete this line!
             parent::ApplyChanges();
 
-            $this->UpdateCalculations();
+            if(@IPS_VariableExists($this->ReadPropertyInteger("Source"))) {
+                $this->RegisterMessage($this->ReadPropertyInteger("Source", VM_UPDATE));
+                $this->UpdateCalculations(); 
+            }   
+            
+            
         }
 
     private function GetAverageConsumption()
@@ -54,8 +58,7 @@
         $archiveControlID = IPS_GetInstanceListByModuleID("{43192F0B-135B-4CE7-A0A7-1475603F3060}")[0];
 
         $loggedValues = AC_GetAggregatedValues($archiveControlID, $this->ReadPropertyInteger("Source"), 1, strtotime("-30 Days"), time(), 0);
-        $this->SendDebug("Logged Values:", print_r($loggedValues, true), 0);
-        
+
         $sum = 0;
 
         foreach ($loggedValues as $loggedValue) {
@@ -85,18 +88,27 @@
         return $readingDates;
     }
 
+    public function MessageSink($TimeStamp, $SenderID, $Message, $Data) 
+    {
+        //Triggered on variable update
+        $this->UpdateCalculations();
+    }
+
     public function UpdateCalculations()
     {
-        
-        $powerPrice = (($this->ReadPropertyFloat("BasePrice") / $this->ReadPropertyInteger("PlannedConsumptionYear")) + $this->ReadPropertyFloat("LaborPrice")) / 100;
-        SetValue($this->GetIDForIdent("PowerPrice"), $powerPrice);
-        $readingDate = json_decode($this->ReadPropertyString("ReadingDate"), true);
-        SetValue($this->GetIDForIdent("DaysUntil"), floor((time()- $this->GetReadingDays()["last"]) /60/60/24) );
-        SetValue($this->GetIDForIdent("PlannedConsumption"), $this->ReadPropertyInteger("PlannedConsumptionYear") / $this->GetDaysToReading());
-        $meterTarget = GetValue($this->GetIDForIdent("PlannedConsumption")) * GetValue($this->GetIDForIdent("DaysUntil")) + $this->ReadPropertyInteger("LastMeterReading");
-        SetValue($this->GetIDForIdent("MeterTarget"), $meterTarget);
-        SetValue($this->GetIDForIdent("Difference"), (($meterTarget - GetValue($this->ReadPropertyInteger("Source"))) * $powerPrice));
-        SetValue($this->GetIDForIdent("AverageConsumption"), $this->GetAverageConsumption());
-    }
+        if(@IPS_VariableExists($this->ReadPropertyInteger("Source"))) {
+            $powerPrice = (($this->ReadPropertyFloat("BasePrice") / $this->ReadPropertyInteger("PlannedConsumptionYear")) + $this->ReadPropertyFloat("LaborPrice")) / 100;
+            SetValue($this->GetIDForIdent("PowerPrice"), $powerPrice);
+            
+            SetValue($this->GetIDForIdent("DaysUntil"), floor((time()- $this->GetReadingDays()["last"]) /60/60/24) );
+            SetValue($this->GetIDForIdent("PlannedConsumption"), $this->ReadPropertyInteger("PlannedConsumptionYear") / $this->GetDaysToReading());
+            
+            $meterTarget = GetValue($this->GetIDForIdent("PlannedConsumption")) * GetValue($this->GetIDForIdent("DaysUntil")) + $this->ReadPropertyInteger("LastMeterReading");
+            SetValue($this->GetIDForIdent("MeterTarget"), $meterTarget);
+            
+            SetValue($this->GetIDForIdent("Difference"), (($meterTarget - GetValue($this->ReadPropertyInteger("Source"))) * $powerPrice));
+            SetValue($this->GetIDForIdent("AverageConsumption"), $this->GetAverageConsumption());
+        }
+    }        
 }
 ?>
