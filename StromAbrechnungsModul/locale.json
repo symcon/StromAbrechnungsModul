@@ -16,7 +16,8 @@
             "meter reading": "Zählerstand",
             "credit note/back payment": "Gutschrift/Rückzahlung",
             "average consumption of the last 30 days": "durchschnittlicher Verbrauch der letzten 30 Tage ",
-            "power price": "Energiepreis"
+            "power price": "Energiepreis",
+            "The selcted variable is not valid!": "Die ausgewählte Variable ist ungültig!"
         }
     }
 }

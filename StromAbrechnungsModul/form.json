@@ -8,5 +8,9 @@
         {"type": "NumberSpinner","name": "LastMeterReading", "caption": "last meter reading", "suffix": "kWh"},
         {"type": "NumberSpinner","name": "PlannedConsumptionYear", "caption": "planned consumption", "suffix": "kWh/year"},
         {"type": "Button", "caption": "Update", "onClick": "SA_UpdateCalculations($id);"}
+    ],
+    "status":
+    [
+        {"code": 200, "icon": "error", "caption": "The selcted variable is not valid!"}
     ]
 }

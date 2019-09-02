@@ -48,10 +48,13 @@ class StromAbrechnungsModul extends IPSModule
         //Never delete this line!
         parent::ApplyChanges();
 
-        if (@IPS_VariableExists($this->ReadPropertyInteger('Source'))) {
-            $this->RegisterMessage($this->ReadPropertyInteger('Source', VM_UPDATE));
-            $this->UpdateCalculations();
+        $archiveControlID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
+
+        if (@IPS_VariableExists($this->ReadPropertyInteger('Source')) && AC_GetAggregationType($archiveControlID, $this->ReadPropertyInteger('Source')) == 1) {
+            $this->RegisterMessage($this->ReadPropertyInteger('Source'), VM_UPDATE);
         }
+
+        $this->UpdateCalculations();
     }
 
     private function GetAverageConsumption()
@@ -71,8 +74,9 @@ class StromAbrechnungsModul extends IPSModule
 
     private function GetDaysToReading()
     {
-        $difference = ($this->GetReadingDays()['next'] - $this->GetReadingDays()['last']) / 60 / 60 / 24;
-        return $difference;
+        $difference = (time() - $this->GetReadingDays()['next']) / 60 / 60 / 24;
+            return floor($difference) * -1;
+        
     }
 
     private function GetReadingDays()
@@ -97,18 +101,34 @@ class StromAbrechnungsModul extends IPSModule
 
     public function UpdateCalculations()
     {
-        if (@IPS_VariableExists($this->ReadPropertyInteger('Source'))) {
-            $powerPrice = (($this->ReadPropertyFloat('BasePrice') / $this->ReadPropertyInteger('PlannedConsumptionYear')) + $this->ReadPropertyFloat('LaborPrice')) / 100;
-            SetValue($this->GetIDForIdent('PowerPrice'), $powerPrice);
+        $archiveControlID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
+        
+        $this->SendDebug("last", date("d.m.Y", $this->GetReadingDays()['last']), 0);
+        $this->SendDebug("next", date("d.m.Y", $this->GetReadingDays()['next']), 0);
+        $this->SendDebug("difference", $this->GetDaysToReading(), 0);
+        
+        
+        if (@IPS_VariableExists($this->ReadPropertyInteger('Source')) && AC_GetAggregationType($archiveControlID, $this->ReadPropertyInteger('Source')) == 1) {
+            if ($this->GetDaysToReading() != 0) {
+                $this->SetStatus(102);
+                $powerPrice = (($this->ReadPropertyFloat('BasePrice') / $this->ReadPropertyInteger('PlannedConsumptionYear')) + $this->ReadPropertyFloat('LaborPrice')) / 100;
+                SetValue($this->GetIDForIdent('PowerPrice'), $powerPrice);
 
-            SetValue($this->GetIDForIdent('DaysUntil'), floor((time() - $this->GetReadingDays()['last']) / 60 / 60 / 24));
-            SetValue($this->GetIDForIdent('PlannedConsumption'), $this->ReadPropertyInteger('PlannedConsumptionYear') / $this->GetDaysToReading());
+                SetValue($this->GetIDForIdent('DaysUntil'), $this->GetDaysToReading());
+                SetValue($this->GetIDForIdent('PlannedConsumption'), $this->ReadPropertyInteger('PlannedConsumptionYear') / $this->GetDaysToReading());
 
-            $meterTarget = GetValue($this->GetIDForIdent('PlannedConsumption')) * GetValue($this->GetIDForIdent('DaysUntil')) + $this->ReadPropertyInteger('LastMeterReading');
-            SetValue($this->GetIDForIdent('MeterTarget'), $meterTarget);
+                $meterTarget = GetValue($this->GetIDForIdent('PlannedConsumption')) * GetValue($this->GetIDForIdent('DaysUntil')) + $this->ReadPropertyInteger('LastMeterReading');
+                SetValue($this->GetIDForIdent('MeterTarget'), $meterTarget);
 
-            SetValue($this->GetIDForIdent('Difference'), (($meterTarget - GetValue($this->ReadPropertyInteger('Source'))) * $powerPrice));
-            SetValue($this->GetIDForIdent('AverageConsumption'), $this->GetAverageConsumption());
+                SetValue($this->GetIDForIdent('Difference'), (($meterTarget - GetValue($this->ReadPropertyInteger('Source'))) * $powerPrice));
+                SetValue($this->GetIDForIdent('AverageConsumption'), $this->GetAverageConsumption());
+            } else {
+                $this->SetStatus(104);
+                SetValue($this->GetIDForIdent('DaysUntil'), 0);
+            }
+            
+        } else {
+            $this->SetStatus(200);
         }
     }
 }
