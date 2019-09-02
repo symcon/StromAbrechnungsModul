@@ -7,6 +7,6 @@
         {"type": "SelectDate", "name": "ReadingDate", "caption": "Meter reading date"},
         {"type": "NumberSpinner","name": "LastMeterReading", "caption": "last meter reading", "suffix": "kWh"},
         {"type": "NumberSpinner","name": "PlannedConsumptionYear", "caption": "planned consumption", "suffix": "kWh/year"},
-        {"type": "NumberSpinner","name": "MeterNumber", "caption": "meter number"}
+        {"type": "Button", "caption": "Update", "onClick": "SA_UpdateCalculations($id);"}
     ]
 }
