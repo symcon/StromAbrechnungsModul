@@ -1,5 +1,6 @@
 # StromAbrechnungsModul
-lorem ipsum.
+Das Modul liefert eine den Kosten-Aufstellung ähnlich der Jahresabrechnung vom Energieversorger. 
+
 
 ### Inhaltverzeichnis
 
@@ -13,7 +14,7 @@ lorem ipsum.
 
 ### 1. Funktionsumfang
 
-*
+* Erzeugt eine Kosten-Aufstellung mithilfe einiger Eckdaten.
 
 ### 2. Voraussetzungen
 
@@ -31,11 +32,14 @@ lorem ipsum.
 
 __Konfigurationsseite__:
 
-Name      | Beschreibung
---------- | ---------------------------------
-          | 
-          | 
-          | 
+Name                | Beschreibung
+------------------- | ---------------------------------
+Quelle              | Die Variable des Hauptzählers
+Grundpreis          | Der Grundpreis
+Arbeitspreis        | Der Arbeitspreis
+Ablresedatum        | Datum der letzen Zählerstandsablesung 
+letzter Zählerstand | Der Zählerstand 
+geplanter Verbrauch | Der geplante Stromverbrauch
 
 
 ### 5. Statusvariablen und Profile
@@ -44,21 +48,29 @@ Die Statusvariablen/Kategorien werden automatisch angelegt. Das Löschen einzeln
 
 ##### Statusvariablen
 
-Name   | Typ     | Beschreibung
------- | ------- | ----------------
-       |         | 
-       |         | 
+Name                                            | Typ     | Beschreibung
+----------------------------------------------- | ------- | -------------------------------
+Energiepreis                                    | Float   | Energiepreis mit einbezug des Grundpreises
+Tage bis zur nächsten Ablesung                  | Integer | Tage bis zur nächsten Ablesung (1 Jahr ausgehend von der letzten Ablesung)
+Zählerstand(Soll)                               | Float   | Der Soll-Wert des Zählers
+Geplanter Verbrauch/Tag                         | Float   | Der Geplante Verbrauch pro Tag basierend auf dem geplanten Jahresverbrauch
+durchschnittlicher Verbrauch der letzten 30 Tage| Float   | Der Mittelwert des Verbrauches der letzten 30 Tage
+Gutschrift/Rückzahlung                          | Float   | Menge der Rückzahlung bzw. Gutschrift
 
 ##### Profile:
 
-Name      | Typ
---------- | ------- 
-          |
+Name          | Typ
+------------- | ------- 
+SA.EuroRating | Float
 
 ### 6. WebFront
 
-
+Hier werden alle wichtigen erechneten Werte angezeigt. 
 
 ### 7. PHP-Befehlsreferenz
 
-
+`boolean SA_UpdateCalculations(integer $InstanzID);`  
+Berechnet alle im Webfront angezeigten Werte basierend auf den Daten auf der Konfigurationsseite.  
+Die Funktion liefert keinerlei Rückgabewert.  
+Beispiel:  
+`SZS_UpdateCalculations(12345);`
