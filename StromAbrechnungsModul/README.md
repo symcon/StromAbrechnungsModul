@@ -73,4 +73,4 @@ Hier werden alle wichtigen erechneten Werte angezeigt.
 Berechnet alle im Webfront angezeigten Werte basierend auf den Daten auf der Konfigurationsseite.  
 Die Funktion liefert keinerlei Rückgabewert.  
 Beispiel:  
-`SZS_UpdateCalculations(12345);`
+`SA_UpdateCalculations(12345);`
