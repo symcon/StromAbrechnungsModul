@@ -93,6 +93,12 @@ class StromAbrechnungsModul extends IPSModule
         return $readingDates;
     }
 
+    private function GetReadingDiff()
+    {
+        $diff = ($this->GetReadingDays()['next'] - $this->GetReadingDays()['last']) /60 /60 / 24;
+        return $diff;
+    }
+
     public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     {
         //Triggered on variable update
@@ -114,13 +120,15 @@ class StromAbrechnungsModul extends IPSModule
                 $powerPrice = (($this->ReadPropertyFloat('BasePrice') / $this->ReadPropertyInteger('PlannedConsumptionYear')) + $this->ReadPropertyFloat('LaborPrice')) / 100;
                 SetValue($this->GetIDForIdent('PowerPrice'), $powerPrice);
 
-                SetValue($this->GetIDForIdent('DaysUntil'), $this->GetDaysToReading());
-                SetValue($this->GetIDForIdent('PlannedConsumption'), $this->ReadPropertyInteger('PlannedConsumptionYear') / $this->GetDaysToReading());
+                SetValue($this->GetIDForIdent('DaysUntil'), $this->GetReadingDiff() - $this->GetDaysToReading());
+                SetValue($this->GetIDForIdent('PlannedConsumption'), $this->ReadPropertyInteger('PlannedConsumptionYear') / $this->GetReadingDiff());
 
                 $meterTarget = GetValue($this->GetIDForIdent('PlannedConsumption')) * GetValue($this->GetIDForIdent('DaysUntil')) + $this->ReadPropertyInteger('LastMeterReading');
                 SetValue($this->GetIDForIdent('MeterTarget'), $meterTarget);
 
                 SetValue($this->GetIDForIdent('Difference'), (($meterTarget - GetValue($this->ReadPropertyInteger('Source'))) * $powerPrice));
+                $this->SendDebug("Credit", $meterTarget, 0);
+                $this->SendDebug("DaysUntil", GetValue($this->GetIDForIdent('DaysUntil')), 0);
                 SetValue($this->GetIDForIdent('AverageConsumption'), $this->GetAverageConsumption());
             } else {
                 $this->SetStatus(104);
