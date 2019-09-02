@@ -61,7 +61,7 @@ Gutschrift/Rückzahlung                          | Float   | Menge der Rückzahl
 
 Name          | Typ
 ------------- | ------- 
-SA.EuroRating | Float
+SAM.EuroRating | Float
 
 ### 6. WebFront
 
@@ -69,8 +69,8 @@ Hier werden alle wichtigen erechneten Werte angezeigt.
 
 ### 7. PHP-Befehlsreferenz
 
-`boolean SA_UpdateCalculations(integer $InstanzID);`  
+`boolean SAM_UpdateCalculations(integer $InstanzID);`  
 Berechnet alle im Webfront angezeigten Werte basierend auf den Daten auf der Konfigurationsseite.  
 Die Funktion liefert keinerlei Rückgabewert.  
 Beispiel:  
-`SA_UpdateCalculations(12345);`
+`SAM_UpdateCalculations(12345);`

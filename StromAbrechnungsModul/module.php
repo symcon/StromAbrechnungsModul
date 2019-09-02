@@ -18,21 +18,21 @@ class StromAbrechnungsModul extends IPSModule
         //$this->RegisterPropertyInteger("AverageBase", 30);
 
         //Profiles
-        if (!IPS_VariableProfileExists('SA.EuroRating')) {
-            IPS_CreateVariableProfile('SA.EuroRating', 2);
-            IPS_SetVariableProfileIcon('SA.EuroRating', 'Euro');
-            IPS_SetVariableProfileValues('SA.EuroRating', 0, 0, 0);
-            IPS_SetVariableProfileText('SA.EuroRating', '', '€');
-            IPS_SetVariableProfileDigits('SA.EuroRating', 2);
-            IPS_SetVariableProfileAssociation('SA.EuroRating', -9999999, '%.2f', '', 0xFF0000);
-            IPS_SetVariableProfileAssociation('SA.EuroRating', 0, '%.2f', '', 0x00FF00);
+        if (!IPS_VariableProfileExists('SAM.EuroRating')) {
+            IPS_CreateVariableProfile('SAM.EuroRating', 2);
+            IPS_SetVariableProfileIcon('SAM.EuroRating', 'Euro');
+            IPS_SetVariableProfileValues('SAM.EuroRating', 0, 0, 0);
+            IPS_SetVariableProfileText('SAM.EuroRating', '', '€');
+            IPS_SetVariableProfileDigits('SAM.EuroRating', 2);
+            IPS_SetVariableProfileAssociation('SAM.EuroRating', -9999999, '%.2f', '', 0xFF0000);
+            IPS_SetVariableProfileAssociation('SAM.EuroRating', 0, '%.2f', '', 0x00FF00);
         }
 
         //Variables
         $this->RegisterVariableInteger('DaysUntil', $this->Translate('days until next reading'), '', 0);
         $this->RegisterVariableFloat('PlannedConsumption', $this->Translate('planned consumption/day'), '~Electricity', 2);
         $this->RegisterVariableFloat('MeterTarget', $this->Translate('meter reading (target)'), '~Electricity', 1);
-        $this->RegisterVariableFloat('Difference', $this->Translate('credit note/back payment'), 'SA.EuroRating', 4);
+        $this->RegisterVariableFloat('Difference', $this->Translate('credit note/back payment'), 'SAM.EuroRating', 4);
         $this->RegisterVariableFloat('AverageConsumption', $this->Translate('average consumption of the last 30 days'), '~Electricity', 3);
         $this->RegisterVariableFloat('PowerPrice', $this->Translate('power price'), '~Euro', -1);
     }
