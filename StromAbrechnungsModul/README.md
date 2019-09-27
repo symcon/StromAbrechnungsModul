@@ -22,8 +22,8 @@ Das Modul liefert eine den Kosten-Aufstellung ähnlich der Jahresabrechnung vom 
 
 ### 3. Software-Installation
 
-* Über den Modul Store das Modul Strom-Abrechnungs-Modul installieren.
-* Alternativ über das Modul Control folgende URL hinzufügen:
+* Über den Module Store das Modul Strom-Abrechnungs-Modul installieren.
+* Alternativ über das Module Control folgende URL hinzufügen:
 `https://github.com/symcon/StromAbrechnungsModul`  
 
 ### 4. Einrichten der Instanzen in IP-Symcon
