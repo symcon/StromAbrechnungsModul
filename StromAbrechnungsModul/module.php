@@ -75,8 +75,7 @@ class StromAbrechnungsModul extends IPSModule
     private function GetDaysToReading()
     {
         $difference = (time() - $this->GetReadingDays()['next']) / 60 / 60 / 24;
-            return floor($difference) * -1;
-        
+        return floor($difference) * -1;
     }
 
     private function GetReadingDays()
@@ -95,7 +94,7 @@ class StromAbrechnungsModul extends IPSModule
 
     private function GetReadingDiff()
     {
-        $diff = ($this->GetReadingDays()['next'] - $this->GetReadingDays()['last']) /60 /60 / 24;
+        $diff = ($this->GetReadingDays()['next'] - $this->GetReadingDays()['last']) / 60 / 60 / 24;
         return $diff;
     }
 
@@ -108,12 +107,11 @@ class StromAbrechnungsModul extends IPSModule
     public function UpdateCalculations()
     {
         $archiveControlID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
-        
-        $this->SendDebug("last", date("d.m.Y", $this->GetReadingDays()['last']), 0);
-        $this->SendDebug("next", date("d.m.Y", $this->GetReadingDays()['next']), 0);
-        $this->SendDebug("difference", $this->GetDaysToReading(), 0);
-        
-        
+
+        $this->SendDebug('last', date('d.m.Y', $this->GetReadingDays()['last']), 0);
+        $this->SendDebug('next', date('d.m.Y', $this->GetReadingDays()['next']), 0);
+        $this->SendDebug('difference', $this->GetDaysToReading(), 0);
+
         if (@IPS_VariableExists($this->ReadPropertyInteger('Source')) && AC_GetAggregationType($archiveControlID, $this->ReadPropertyInteger('Source')) == 1) {
             if ($this->GetDaysToReading() != 0) {
                 $this->SetStatus(102);
@@ -127,14 +125,13 @@ class StromAbrechnungsModul extends IPSModule
                 SetValue($this->GetIDForIdent('MeterTarget'), $meterTarget);
 
                 SetValue($this->GetIDForIdent('Difference'), (($meterTarget - GetValue($this->ReadPropertyInteger('Source'))) * $powerPrice));
-                $this->SendDebug("Credit", $meterTarget, 0);
-                $this->SendDebug("DaysUntil", GetValue($this->GetIDForIdent('DaysUntil')), 0);
+                $this->SendDebug('Credit', $meterTarget, 0);
+                $this->SendDebug('DaysUntil', GetValue($this->GetIDForIdent('DaysUntil')), 0);
                 SetValue($this->GetIDForIdent('AverageConsumption'), $this->GetAverageConsumption());
             } else {
                 $this->SetStatus(104);
                 SetValue($this->GetIDForIdent('DaysUntil'), 0);
             }
-            
         } else {
             $this->SetStatus(200);
         }
