@@ -48,10 +48,14 @@ class StromAbrechnungsModul extends IPSModule
         //Never delete this line!
         parent::ApplyChanges();
 
+        //Deleting all references in order to readd them
+        foreach ($this->GetReferenceList() as $referenceID) {
+            $this->UnregisterReference($referenceID);
+        }
         $archiveControlID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
-
         if (@IPS_VariableExists($this->ReadPropertyInteger('Source')) && AC_GetAggregationType($archiveControlID, $this->ReadPropertyInteger('Source')) == 1) {
             $this->RegisterMessage($this->ReadPropertyInteger('Source'), VM_UPDATE);
+            $this->RegisterReference($this->ReadPropertyInteger('Source'));
         }
 
         $this->UpdateCalculations();
