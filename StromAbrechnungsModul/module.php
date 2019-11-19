@@ -76,7 +76,7 @@ class StromAbrechnungsModul extends IPSModule
         foreach ($loggedValues as $loggedValue) {
             $sum += $loggedValue['Avg'];
         }
-        
+
         return $sum / count($loggedValues);
     }
 
@@ -125,19 +125,18 @@ class StromAbrechnungsModul extends IPSModule
                 SetValue($this->GetIDForIdent('DaysUntil'), $this->GetDaysToReading());
                 //SetValue($this->GetIDForIdent('DaysUntil'), $this->GetReadingDiff() - $this->GetDaysToReading()); -----> was there for a reason!?
                 SetValue($this->GetIDForIdent('PlannedConsumption'), $this->ReadPropertyInteger('PlannedConsumptionYear') / $this->GetReadingDiff());
-                
+
                 $meterTarget = GetValue($this->GetIDForIdent('PlannedConsumption')) * GetValue($this->GetIDForIdent('DaysUntil')) + $this->ReadPropertyInteger('LastMeterReading');
                 SetValue($this->GetIDForIdent('MeterTarget'), $meterTarget);
 
                 $priceDiff = (($meterTarget - GetValue($this->ReadPropertyInteger('Source'))) * $powerPrice);
-                SetValue($this->GetIDForIdent('Difference'), $priceDiff); 
+                SetValue($this->GetIDForIdent('Difference'), $priceDiff);
                 SetValue($this->GetIDForIdent('AverageConsumption'), $this->GetAverageConsumption());
 
                 $this->SendDebug('PriceDiff', $priceDiff, 0);
                 $this->SendDebug('DaysUntil', GetValue($this->GetIDForIdent('DaysUntil')), 0);
                 $this->SendDebug('ReadingDiff', $this->GetReadingDiff(), 0);
                 $this->SendDebug('DaysToReading', $this->GetDaysToReading(), 0);
-
             } else {
                 $this->SetStatus(104);
                 SetValue($this->GetIDForIdent('DaysUntil'), 0);
