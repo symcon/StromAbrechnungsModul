@@ -7,7 +7,7 @@
         {"type": "SelectDate", "name": "ReadingDate", "caption": "Meter reading date"},
         {"type": "NumberSpinner","name": "LastMeterReading", "caption": "last meter reading", "suffix": "kWh"},
         {"type": "NumberSpinner","name": "PlannedConsumptionYear", "caption": "planned consumption", "suffix": "kWh/year"},
-        {"type": "Button", "caption": "Update", "onClick": "SA_UpdateCalculations($id);"}
+        {"type": "Button", "caption": "Update", "onClick": "SAM_UpdateCalculations($id);"}
     ],
     "status":
     [

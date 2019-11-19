@@ -27,9 +27,13 @@ class StromAbrechnungsModul extends IPSModule
             IPS_SetVariableProfileAssociation('SAM.EuroRating', -9999999, '%.2f', '', 0xFF0000);
             IPS_SetVariableProfileAssociation('SAM.EuroRating', 0, '%.2f', '', 0x00FF00);
         }
+        if (!IPS_VariableProfileExists('SAM.DaysUntil')) {
+            IPS_CreateVariableProfile('SAM.DaysUntil', 1);
+            IPS_SetVariableProfileIcon('SAM.DaysUntil', 'Calendar');
+        }
 
         //Variables
-        $this->RegisterVariableInteger('DaysUntil', $this->Translate('days until next reading'), '', 0);
+        $this->RegisterVariableInteger('DaysUntil', $this->Translate('days until next reading'), 'SAM.DaysUntil', 0);
         $this->RegisterVariableFloat('PlannedConsumption', $this->Translate('planned consumption/day'), '~Electricity', 2);
         $this->RegisterVariableFloat('MeterTarget', $this->Translate('meter reading (target)'), '~Electricity', 1);
         $this->RegisterVariableFloat('Difference', $this->Translate('credit note/back payment'), 'SAM.EuroRating', 4);
@@ -72,7 +76,7 @@ class StromAbrechnungsModul extends IPSModule
         foreach ($loggedValues as $loggedValue) {
             $sum += $loggedValue['Avg'];
         }
-
+        
         return $sum / count($loggedValues);
     }
 
@@ -112,26 +116,28 @@ class StromAbrechnungsModul extends IPSModule
     {
         $archiveControlID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
 
-        $this->SendDebug('last', date('d.m.Y', $this->GetReadingDays()['last']), 0);
-        $this->SendDebug('next', date('d.m.Y', $this->GetReadingDays()['next']), 0);
-        $this->SendDebug('difference', $this->GetDaysToReading(), 0);
-
         if (@IPS_VariableExists($this->ReadPropertyInteger('Source')) && AC_GetAggregationType($archiveControlID, $this->ReadPropertyInteger('Source')) == 1) {
             if ($this->GetDaysToReading() != 0) {
                 $this->SetStatus(102);
                 $powerPrice = (($this->ReadPropertyFloat('BasePrice') / $this->ReadPropertyInteger('PlannedConsumptionYear')) + $this->ReadPropertyFloat('LaborPrice')) / 100;
                 SetValue($this->GetIDForIdent('PowerPrice'), $powerPrice);
 
-                SetValue($this->GetIDForIdent('DaysUntil'), $this->GetReadingDiff() - $this->GetDaysToReading());
+                SetValue($this->GetIDForIdent('DaysUntil'), $this->GetDaysToReading());
+                //SetValue($this->GetIDForIdent('DaysUntil'), $this->GetReadingDiff() - $this->GetDaysToReading()); -----> was there for a reason!?
                 SetValue($this->GetIDForIdent('PlannedConsumption'), $this->ReadPropertyInteger('PlannedConsumptionYear') / $this->GetReadingDiff());
-
+                
                 $meterTarget = GetValue($this->GetIDForIdent('PlannedConsumption')) * GetValue($this->GetIDForIdent('DaysUntil')) + $this->ReadPropertyInteger('LastMeterReading');
                 SetValue($this->GetIDForIdent('MeterTarget'), $meterTarget);
 
-                SetValue($this->GetIDForIdent('Difference'), (($meterTarget - GetValue($this->ReadPropertyInteger('Source'))) * $powerPrice));
-                $this->SendDebug('Credit', $meterTarget, 0);
-                $this->SendDebug('DaysUntil', GetValue($this->GetIDForIdent('DaysUntil')), 0);
+                $priceDiff = (($meterTarget - GetValue($this->ReadPropertyInteger('Source'))) * $powerPrice);
+                SetValue($this->GetIDForIdent('Difference'), $priceDiff); 
                 SetValue($this->GetIDForIdent('AverageConsumption'), $this->GetAverageConsumption());
+
+                $this->SendDebug('PriceDiff', $priceDiff, 0);
+                $this->SendDebug('DaysUntil', GetValue($this->GetIDForIdent('DaysUntil')), 0);
+                $this->SendDebug('ReadingDiff', $this->GetReadingDiff(), 0);
+                $this->SendDebug('DaysToReading', $this->GetDaysToReading(), 0);
+
             } else {
                 $this->SetStatus(104);
                 SetValue($this->GetIDForIdent('DaysUntil'), 0);
