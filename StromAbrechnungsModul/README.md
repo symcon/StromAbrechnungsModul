@@ -37,7 +37,7 @@ Name                | Beschreibung
 Quelle              | Die Variable des Hauptzählers
 Grundpreis          | Der Grundpreis
 Arbeitspreis        | Der Arbeitspreis
-Ablresedatum        | Datum der letzen Zählerstandsablesung 
+Ablesedatum        | Datum der letzen Zählerstandsablesung 
 letzter Zählerstand | Der Zählerstand 
 geplanter Verbrauch | Der geplante Stromverbrauch
 
