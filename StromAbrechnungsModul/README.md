@@ -65,7 +65,7 @@ SAM.EuroRating | Float
 
 ### 6. WebFront
 
-Hier werden alle wichtigen erechneten Werte angezeigt. 
+Hier werden alle wichtigen errechneten Werte angezeigt. 
 
 ### 7. PHP-Befehlsreferenz
 
