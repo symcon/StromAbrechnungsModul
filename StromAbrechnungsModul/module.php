@@ -34,11 +34,12 @@ class StromAbrechnungsModul extends IPSModule
 
         //Variables
         $this->RegisterVariableInteger('DaysUntil', $this->Translate('days until next reading'), 'SAM.DaysUntil', 0);
-        $this->RegisterVariableFloat('PlannedConsumption', $this->Translate('planned consumption/day'), '~Electricity', 2);
+        $this->RegisterVariableFloat('PlannedConsumption', $this->Translate('planned consumption/day'), '~Electricity', 3);
         $this->RegisterVariableFloat('MeterTarget', $this->Translate('meter reading (target)'), '~Electricity', 1);
-        $this->RegisterVariableFloat('Difference', $this->Translate('credit note/back payment'), 'SAM.EuroRating', 4);
-        $this->RegisterVariableFloat('AverageConsumption', $this->Translate('average consumption of the last 30 days'), '~Electricity', 3);
+        $this->RegisterVariableFloat('Difference', $this->Translate('credit note/back payment'), 'SAM.EuroRating', 5);
+        $this->RegisterVariableFloat('AverageConsumption', $this->Translate('average consumption of the last 30 days'), '~Electricity', 4);
         $this->RegisterVariableFloat('PowerPrice', $this->Translate('power price'), '~Euro', -1);
+        $this->RegisterVariableInteger('DaysSinceReading', $this->Translate('Days since last reading'), '', 1);
     }
 
     public function Destroy()
@@ -125,8 +126,9 @@ class StromAbrechnungsModul extends IPSModule
                 SetValue($this->GetIDForIdent('DaysUntil'), $this->GetDaysToReading());
                 //SetValue($this->GetIDForIdent('DaysUntil'), $this->GetReadingDiff() - $this->GetDaysToReading()); -----> was there for a reason!?
                 SetValue($this->GetIDForIdent('PlannedConsumption'), $this->ReadPropertyInteger('PlannedConsumptionYear') / $this->GetReadingDiff());
+                SetValue($this->GetIDForIdent('DaysSinceReading'), $this->GetReadingDiff() - $this->GetDaysToReading());
 
-                $meterTarget = GetValue($this->GetIDForIdent('PlannedConsumption')) * GetValue($this->GetIDForIdent('DaysUntil')) + $this->ReadPropertyInteger('LastMeterReading');
+                $meterTarget = GetValue($this->GetIDForIdent('PlannedConsumption')) * GetValue($this->GetIDForIdent('DaysSinceReading')) + $this->ReadPropertyInteger('LastMeterReading');
                 SetValue($this->GetIDForIdent('MeterTarget'), $meterTarget);
 
                 $priceDiff = (($meterTarget - GetValue($this->ReadPropertyInteger('Source'))) * $powerPrice);

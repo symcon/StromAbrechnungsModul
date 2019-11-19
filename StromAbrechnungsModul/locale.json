@@ -6,7 +6,7 @@
             "euro/year": "Euro/Jahr",
             "labor price": "Arbeitspreis",
             "Meter reading date": "Ablesedatum",
-            "last meter reading": "letzter Zählerstand",
+            "meter reading(reading day)": "Zählerstand(Ablesetag)",
             "planned consumption": "geplanter Verbrauch",
             "kWh/year": "kWh/Jahr",
             "meter number": "Zählernummer",
@@ -17,7 +17,8 @@
             "credit note/back payment": "Gutschrift/Rückzahlung",
             "average consumption of the last 30 days": "durchschnittlicher Verbrauch der letzten 30 Tage ",
             "power price": "Energiepreis",
-            "The selcted variable is not valid!": "Die ausgewählte Variable ist ungültig!"
+            "The selcted variable is not valid!": "Die ausgewählte Variable ist ungültig!",
+            "Days since last reading": "Tage seit letzter Ablesung"
         }
     }
 }
