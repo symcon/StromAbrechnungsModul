@@ -12,13 +12,14 @@
             "meter number": "Zählernummer",
             "days until next reading": "Tage bis zur nächsten Ablesung",
             "planned consumption/day": "Geplanter Verbrauch/Tag",
-            "meter reading (target)": "Zählerstand(Soll)",
+            "meter reading (target)": "Zählerstand (Soll)",
             "meter reading": "Zählerstand",
             "credit note/back payment": "Gutschrift/Rückzahlung",
             "average consumption of the last 30 days": "durchschnittlicher Verbrauch der letzten 30 Tage ",
             "power price": "Energiepreis",
             "The selcted variable is not valid!": "Die ausgewählte Variable ist ungültig!",
-            "Days since last reading": "Tage seit letzter Ablesung"
+            "Days since last reading": "Tage seit letzter Ablesung",
+            "Variance": "Abweichung"
         }
     }
 }

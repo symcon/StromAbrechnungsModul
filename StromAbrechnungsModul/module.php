@@ -27,19 +27,20 @@ class StromAbrechnungsModul extends IPSModule
             IPS_SetVariableProfileAssociation('SAM.EuroRating', -9999999, '%.2f', '', 0xFF0000);
             IPS_SetVariableProfileAssociation('SAM.EuroRating', 0, '%.2f', '', 0x00FF00);
         }
-        if (!IPS_VariableProfileExists('SAM.DaysUntil')) {
-            IPS_CreateVariableProfile('SAM.DaysUntil', 1);
-            IPS_SetVariableProfileIcon('SAM.DaysUntil', 'Calendar');
+        if (!IPS_VariableProfileExists('SAM.Calendar')) {
+            IPS_CreateVariableProfile('SAM.Calendar', 1);
+            IPS_SetVariableProfileIcon('SAM.Calendar', 'Calendar');
         }
 
         //Variables
-        $this->RegisterVariableInteger('DaysUntil', $this->Translate('days until next reading'), 'SAM.DaysUntil', 0);
+        $this->RegisterVariableInteger('DaysUntil', $this->Translate('days until next reading'), 'SAM.Calendar', 0);
         $this->RegisterVariableFloat('PlannedConsumption', $this->Translate('planned consumption/day'), '~Electricity', 3);
         $this->RegisterVariableFloat('MeterTarget', $this->Translate('meter reading (target)'), '~Electricity', 1);
-        $this->RegisterVariableFloat('Difference', $this->Translate('credit note/back payment'), 'SAM.EuroRating', 5);
+        $this->RegisterVariableFloat('DifferencePayment', $this->Translate('credit note/back payment'), 'SAM.EuroRating', 6);
         $this->RegisterVariableFloat('AverageConsumption', $this->Translate('average consumption of the last 30 days'), '~Electricity', 4);
         $this->RegisterVariableFloat('PowerPrice', $this->Translate('power price'), '~Euro', -1);
-        $this->RegisterVariableInteger('DaysSinceReading', $this->Translate('Days since last reading'), '', 1);
+        $this->RegisterVariableInteger('DaysSinceReading', $this->Translate('Days since last reading'), 'SAM.Calendar', 1);
+        $this->RegisterVariableFloat('Difference', $this->Translate('Variance'), '~Electricity', 5);
     }
 
     public function Destroy()
@@ -132,7 +133,8 @@ class StromAbrechnungsModul extends IPSModule
                 SetValue($this->GetIDForIdent('MeterTarget'), $meterTarget);
 
                 $priceDiff = (($meterTarget - GetValue($this->ReadPropertyInteger('Source'))) * $powerPrice);
-                SetValue($this->GetIDForIdent('Difference'), $priceDiff);
+                SetValue($this->GetIDForIdent('DifferencePayment'), $priceDiff);
+                SetValue($this->GetIDForIdent('Difference'), $meterTarget - GetValue($this->ReadPropertyInteger('Source')));
                 SetValue($this->GetIDForIdent('AverageConsumption'), $this->GetAverageConsumption());
 
                 $this->SendDebug('PriceDiff', $priceDiff, 0);
