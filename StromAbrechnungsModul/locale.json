@@ -19,7 +19,8 @@
             "power price": "Energiepreis",
             "The selcted variable is not valid!": "Die ausgewählte Variable ist ungültig!",
             "Days since last reading": "Tage seit letzter Ablesung",
-            "Variance": "Abweichung"
+            "Variance": "Abweichung",
+            "days": "Tage"
         }
     }
 }

@@ -15,14 +15,13 @@ class StromAbrechnungsModul extends IPSModule
         $this->RegisterPropertyString('ReadingDate', '{"year":2019,"month":1,"day":1}');
         $this->RegisterPropertyInteger('LastMeterReading', 70518);
         $this->RegisterPropertyInteger('PlannedConsumptionYear', 4250);
-        //$this->RegisterPropertyInteger("AverageBase", 30);
 
         //Profiles
         if (!IPS_VariableProfileExists('SAM.EuroRating')) {
             IPS_CreateVariableProfile('SAM.EuroRating', 2);
             IPS_SetVariableProfileIcon('SAM.EuroRating', 'Euro');
             IPS_SetVariableProfileValues('SAM.EuroRating', 0, 0, 0);
-            IPS_SetVariableProfileText('SAM.EuroRating', '', '€');
+            IPS_SetVariableProfileText('SAM.EuroRating', '', ' ' . '€');
             IPS_SetVariableProfileDigits('SAM.EuroRating', 2);
             IPS_SetVariableProfileAssociation('SAM.EuroRating', -9999999, '%.2f', '', 0xFF0000);
             IPS_SetVariableProfileAssociation('SAM.EuroRating', 0, '%.2f', '', 0x00FF00);
@@ -30,6 +29,13 @@ class StromAbrechnungsModul extends IPSModule
         if (!IPS_VariableProfileExists('SAM.Calendar')) {
             IPS_CreateVariableProfile('SAM.Calendar', 1);
             IPS_SetVariableProfileIcon('SAM.Calendar', 'Calendar');
+            IPS_SetVariableProfileText('SAM.Calendar', '', ' ' . $this->Translate('days'));
+        }
+        if (!IPS_VariableProfileExists('SAM.PowerPrice')) {
+            IPS_CreateVariableProfile('SAM.PowerPrice', 2);
+            IPS_SetVariableProfileIcon('SAM.PowerPrice', 'Euro');
+            IPS_SetVariableProfileText('SAM.PowerPrice', '', ' ' . 'ct/kwh');
+            IPS_SetVariableProfileDigits('SAM.PowerPrice', 2);
         }
 
         //Variables
@@ -38,7 +44,7 @@ class StromAbrechnungsModul extends IPSModule
         $this->RegisterVariableFloat('MeterTarget', $this->Translate('meter reading (target)'), '~Electricity', 1);
         $this->RegisterVariableFloat('DifferencePayment', $this->Translate('credit note/back payment'), 'SAM.EuroRating', 6);
         $this->RegisterVariableFloat('AverageConsumption', $this->Translate('average consumption of the last 30 days'), '~Electricity', 4);
-        $this->RegisterVariableFloat('PowerPrice', $this->Translate('power price'), '~Euro', -1);
+        $this->RegisterVariableFloat('PowerPrice', $this->Translate('power price'), 'SAM.PowerPrice', -1);
         $this->RegisterVariableInteger('DaysSinceReading', $this->Translate('Days since last reading'), 'SAM.Calendar', 1);
         $this->RegisterVariableFloat('Difference', $this->Translate('Variance'), '~Electricity', 5);
     }
@@ -121,11 +127,10 @@ class StromAbrechnungsModul extends IPSModule
         if (@IPS_VariableExists($this->ReadPropertyInteger('Source')) && AC_GetAggregationType($archiveControlID, $this->ReadPropertyInteger('Source')) == 1) {
             if ($this->GetDaysToReading() != 0) {
                 $this->SetStatus(102);
-                $powerPrice = (($this->ReadPropertyFloat('BasePrice') / $this->ReadPropertyInteger('PlannedConsumptionYear')) + $this->ReadPropertyFloat('LaborPrice')) / 100;
-                SetValue($this->GetIDForIdent('PowerPrice'), $powerPrice);
+                $powerPrice = (($this->ReadPropertyFloat('BasePrice') / $this->ReadPropertyInteger('PlannedConsumptionYear')) + ($this->ReadPropertyFloat('LaborPrice')) / 100);
+                SetValue($this->GetIDForIdent('PowerPrice'), $powerPrice * 100);
 
                 SetValue($this->GetIDForIdent('DaysUntil'), $this->GetDaysToReading());
-                //SetValue($this->GetIDForIdent('DaysUntil'), $this->GetReadingDiff() - $this->GetDaysToReading()); -----> was there for a reason!?
                 SetValue($this->GetIDForIdent('PlannedConsumption'), $this->ReadPropertyInteger('PlannedConsumptionYear') / $this->GetReadingDiff());
                 SetValue($this->GetIDForIdent('DaysSinceReading'), $this->GetReadingDiff() - $this->GetDaysToReading());
 
