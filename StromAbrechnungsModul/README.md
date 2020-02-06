@@ -34,12 +34,12 @@ __Konfigurationsseite__:
 
 Name                | Beschreibung
 ------------------- | ---------------------------------
-Quelle              | Die Variable des Hauptzählers
+Quelle              | Die Variable des Hauptzählers, welche als Zähler geloggt wird
 Grundpreis          | Der Grundpreis
 Arbeitspreis        | Der Arbeitspreis
-Ablesedatum        | Datum der letzen Zählerstandsablesung 
-letzter Zählerstand | Der Zählerstand 
-geplanter Verbrauch | Der geplante Stromverbrauch
+Ablesedatum         | Datum der letzen Zählerstandsablesung 
+letzter Zählerstand | Der Zählerstand am lezten Ablesetermin
+geplanter Verbrauch | Der geplante Stromverbrauch/Jahr
 
 
 ### 5. Statusvariablen und Profile
@@ -52,16 +52,20 @@ Name                                            | Typ     | Beschreibung
 ----------------------------------------------- | ------- | -------------------------------
 Energiepreis                                    | Float   | Energiepreis mit einbezug des Grundpreises
 Tage bis zur nächsten Ablesung                  | Integer | Tage bis zur nächsten Ablesung (1 Jahr ausgehend von der letzten Ablesung)
-Zählerstand(Soll)                               | Float   | Der Soll-Wert des Zählers
+Tage seit letzter Ablesung                      | Integer | Tage seit letzter Ablesung
+Zählerstand(Soll)                               | Float   | Der Soll-Wert des heutigen Zählerstandes basierend auf dem geplanten Verbrauch
 Geplanter Verbrauch/Tag                         | Float   | Der Geplante Verbrauch pro Tag basierend auf dem geplanten Jahresverbrauch
 durchschnittlicher Verbrauch der letzten 30 Tage| Float   | Der Mittelwert des Verbrauches der letzten 30 Tage
-Gutschrift/Rückzahlung                          | Float   | Menge der Rückzahlung bzw. Gutschrift
+Abweichung                                      | Float   | Die Abweichung des tatsächlichen Zählerstandes zum Soll-Wert
+Gutschrift/Rückzahlung                          | Float   | Menge der Rückzahlung bzw. Gutschrift berechnet durch die Abweichung
 
 ##### Profile:
 
-Name          | Typ
-------------- | ------- 
+Name           | Typ
+-------------  | ------- 
 SAM.EuroRating | Float
+SAM.PowerPrice | Float
+SAM.Calendar   | Integer
 
 ### 6. WebFront
 
