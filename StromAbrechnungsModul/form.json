@@ -11,6 +11,9 @@
     ],
     "status":
     [
-        {"code": 200, "icon": "error", "caption": "The selcted variable is not valid!"}
+        {"code": 200, "icon": "error", "caption": "The selcted variable does not exist!"},
+        {"code": 201, "icon": "error", "caption": "The selcted variable is not numeric!"},
+        {"code": 202, "icon": "error", "caption": "The selcted variable is not logged!"},
+        {"code": 203, "icon": "error", "caption": "The selcted variable is not aggregated as counter!"}
     ]
 }

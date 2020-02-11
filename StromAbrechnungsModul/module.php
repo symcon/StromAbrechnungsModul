@@ -84,7 +84,9 @@ class StromAbrechnungsModul extends IPSModule
         foreach ($loggedValues as $loggedValue) {
             $sum += $loggedValue['Avg'];
         }
-
+        if (count($loggedValues) == 0) {
+            return 0;
+        }
         return $sum / count($loggedValues);
     }
 
@@ -123,8 +125,17 @@ class StromAbrechnungsModul extends IPSModule
     public function UpdateCalculations()
     {
         $archiveControlID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
+        $sourceVariableID = $this->ReadPropertyInteger('Source');
 
-        if (@IPS_VariableExists($this->ReadPropertyInteger('Source')) && AC_GetAggregationType($archiveControlID, $this->ReadPropertyInteger('Source')) == 1) {
+        if (!IPS_VariableExists($sourceVariableID)) {
+            $this->SetStatus(200); //Variable doesn't exist
+        } elseif (IPS_GetVariable($sourceVariableID)['VariableType'] == VARIABLETYPE_BOOLEAN || IPS_GetVariable($sourceVariableID)['VariableType'] == VARIABLETYPE_STRING) {
+            $this->SetStatus(201); //Variable is not numeric
+        } elseif (!AC_GetLoggingStatus($archiveControlID, $sourceVariableID)) {
+            $this->SetStatus(202); //Variable not logged
+        } elseif (!AC_GetAggregationType($archiveControlID, $sourceVariableID)) {
+            $this->SetStatus(203); //Variable not aggregated as counter
+        } else {
             if ($this->GetDaysToReading() != 0) {
                 $this->SetStatus(102);
                 $powerPrice = (($this->ReadPropertyFloat('BasePrice') / $this->ReadPropertyInteger('PlannedConsumptionYear')) + ($this->ReadPropertyFloat('LaborPrice')) / 100);
@@ -137,9 +148,9 @@ class StromAbrechnungsModul extends IPSModule
                 $meterTarget = GetValue($this->GetIDForIdent('PlannedConsumption')) * GetValue($this->GetIDForIdent('DaysSinceReading')) + $this->ReadPropertyInteger('LastMeterReading');
                 SetValue($this->GetIDForIdent('MeterTarget'), $meterTarget);
 
-                $priceDiff = (($meterTarget - GetValue($this->ReadPropertyInteger('Source'))) * $powerPrice);
+                $priceDiff = (($meterTarget - GetValue($sourceVariableID)) * $powerPrice);
                 SetValue($this->GetIDForIdent('DifferencePayment'), $priceDiff);
-                SetValue($this->GetIDForIdent('Difference'), $meterTarget - GetValue($this->ReadPropertyInteger('Source')));
+                SetValue($this->GetIDForIdent('Difference'), $meterTarget - GetValue($sourceVariableID));
                 SetValue($this->GetIDForIdent('AverageConsumption'), $this->GetAverageConsumption());
 
                 $this->SendDebug('PriceDiff', $priceDiff, 0);
@@ -150,8 +161,6 @@ class StromAbrechnungsModul extends IPSModule
                 $this->SetStatus(104);
                 SetValue($this->GetIDForIdent('DaysUntil'), 0);
             }
-        } else {
-            $this->SetStatus(200);
         }
     }
 }

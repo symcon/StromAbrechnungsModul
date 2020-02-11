@@ -17,7 +17,10 @@
             "credit note/back payment": "Gutschrift/Rückzahlung",
             "average consumption of the last 30 days": "durchschnittlicher Verbrauch der letzten 30 Tage ",
             "power price": "Energiepreis",
-            "The selcted variable is not valid!": "Die ausgewählte Variable ist ungültig!",
+            "The selcted variable does not exist!": "Die ausgewählte Variable existiert nicht!",
+            "The selcted variable is not numeric!": "Die ausgewählte Varible ist nicht numerisch",
+            "The selcted variable is not logged!": "Die ausgewählte Variable ist nicht geloggt",
+            "The selcted variable is not aggregated as counter!": "Die ausgewählte Variable ist nicht als Zähler aggregiert",
             "Days since last reading": "Tage seit letzter Ablesung",
             "Variance": "Abweichung",
             "days": "Tage"
