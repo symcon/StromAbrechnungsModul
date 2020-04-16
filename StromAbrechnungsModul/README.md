@@ -28,7 +28,7 @@ Das Modul liefert eine den Kosten-Aufstellung ähnlich der Jahresabrechnung vom 
 
 ### 4. Einrichten der Instanzen in IP-Symcon
 
-- Unter "Instanz hinzufügen" ist das 'StromAbrechnung'-Modul unter dem Hersteller '(Gerät)' aufgeführt.  
+- Unter "Instanz hinzufügen" kann das 'StromAbrechnung'-Modul mithilfe der Schnellsuche gefunden werden.  
 
 __Konfigurationsseite__:
 
