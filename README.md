@@ -6,6 +6,6 @@
 
 Folgende Module beinhaltet das StromAbrechnungsModul Repository:
 
-- __Strom-Abrechnungs-Modul__ ([Dokumentation](StromAbrechnungsModul))  
+- __Strom-Abrechnungs-Modul__ ([Dokumentation](https://www.symcon.de/de/service/dokumentation/modulreferenz/stromabrechnungsmodul))  
 	Das Modul liefert eine den Kosten-Aufstellung ähnlich der Jahresabrechnung vom Energieversorger. 
 
