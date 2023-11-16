@@ -73,49 +73,6 @@ class StromAbrechnungsModul extends IPSModule
         $this->UpdateCalculations();
     }
 
-    private function GetAverageConsumption()
-    {
-        $archiveControlID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
-
-        $loggedValues = AC_GetAggregatedValues($archiveControlID, $this->ReadPropertyInteger('Source'), 1, strtotime('-30 Days'), time(), 0);
-
-        $sum = 0;
-
-        foreach ($loggedValues as $loggedValue) {
-            $sum += $loggedValue['Avg'];
-        }
-        if (count($loggedValues) == 0) {
-            return 0;
-        }
-        return $sum / count($loggedValues);
-    }
-
-    private function GetDaysToReading()
-    {
-        $difference = (time() - $this->GetReadingDays()['next']) / 60 / 60 / 24;
-        return floor($difference) * -1;
-    }
-
-    private function GetReadingDays()
-    {
-        $readingDate = json_decode($this->ReadPropertyString('ReadingDate'), true);
-        $lastReadingDay = mktime(0, 0, 0, $readingDate['month'], $readingDate['day'], $readingDate['year']);
-        $nextReadingDay = strtotime('+1 year', $lastReadingDay);
-
-        $readingDates = [
-            'last' => $lastReadingDay,
-            'next' => $nextReadingDay
-        ];
-
-        return $readingDates;
-    }
-
-    private function GetReadingDiff()
-    {
-        $diff = ($this->GetReadingDays()['next'] - $this->GetReadingDays()['last']) / 60 / 60 / 24;
-        return $diff;
-    }
-
     public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     {
         //Triggered on variable update
@@ -162,5 +119,48 @@ class StromAbrechnungsModul extends IPSModule
                 SetValue($this->GetIDForIdent('DaysUntil'), 0);
             }
         }
+    }
+
+    private function GetAverageConsumption()
+    {
+        $archiveControlID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
+
+        $loggedValues = AC_GetAggregatedValues($archiveControlID, $this->ReadPropertyInteger('Source'), 1, strtotime('-30 Days'), time(), 0);
+
+        $sum = 0;
+
+        foreach ($loggedValues as $loggedValue) {
+            $sum += $loggedValue['Avg'];
+        }
+        if (count($loggedValues) == 0) {
+            return 0;
+        }
+        return $sum / count($loggedValues);
+    }
+
+    private function GetDaysToReading()
+    {
+        $difference = (time() - $this->GetReadingDays()['next']) / 60 / 60 / 24;
+        return floor($difference) * -1;
+    }
+
+    private function GetReadingDays()
+    {
+        $readingDate = json_decode($this->ReadPropertyString('ReadingDate'), true);
+        $lastReadingDay = mktime(0, 0, 0, $readingDate['month'], $readingDate['day'], $readingDate['year']);
+        $nextReadingDay = strtotime('+1 year', $lastReadingDay);
+
+        $readingDates = [
+            'last' => $lastReadingDay,
+            'next' => $nextReadingDay
+        ];
+
+        return $readingDates;
+    }
+
+    private function GetReadingDiff()
+    {
+        $diff = ($this->GetReadingDays()['next'] - $this->GetReadingDays()['last']) / 60 / 60 / 24;
+        return $diff;
     }
 }

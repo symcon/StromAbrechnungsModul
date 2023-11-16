@@ -1,19 +1,67 @@
 {
-    "elements":
-    [
-        {"type": "SelectVariable", "name": "Source", "caption": "Source"},
-        {"type": "NumberSpinner","name": "BasePrice", "caption": "base price", "digits": 2, "suffix": "euro/year"},
-        {"type": "NumberSpinner","name": "LaborPrice", "caption": "labor price", "digits": 2, "suffix": "ct/kWh"},
-        {"type": "SelectDate", "name": "ReadingDate", "caption": "Meter reading date"},
-        {"type": "NumberSpinner","name": "LastMeterReading", "caption": "meter reading(reading day)", "suffix": "kWh"},
-        {"type": "NumberSpinner","name": "PlannedConsumptionYear", "caption": "planned consumption", "suffix": "kWh/year"},
-        {"type": "Button", "caption": "Update", "onClick": "SAM_UpdateCalculations($id);"}
+    "elements": [
+        {
+            "type": "SelectVariable",
+            "name": "Source",
+            "caption": "Source"
+        },
+        {
+            "type": "NumberSpinner",
+            "name": "BasePrice",
+            "caption": "base price",
+            "digits": 2,
+            "suffix": "euro/year"
+        },
+        {
+            "type": "NumberSpinner",
+            "name": "LaborPrice",
+            "caption": "labor price",
+            "digits": 2,
+            "suffix": "ct/kWh"
+        },
+        {
+            "type": "SelectDate",
+            "name": "ReadingDate",
+            "caption": "Meter reading date"
+        },
+        {
+            "type": "NumberSpinner",
+            "name": "LastMeterReading",
+            "caption": "meter reading(reading day)",
+            "suffix": "kWh"
+        },
+        {
+            "type": "NumberSpinner",
+            "name": "PlannedConsumptionYear",
+            "caption": "planned consumption",
+            "suffix": "kWh/year"
+        },
+        {
+            "type": "Button",
+            "caption": "Update",
+            "onClick": "SAM_UpdateCalculations($id);"
+        }
     ],
-    "status":
-    [
-        {"code": 200, "icon": "error", "caption": "The selcted variable does not exist!"},
-        {"code": 201, "icon": "error", "caption": "The selcted variable is not numeric!"},
-        {"code": 202, "icon": "error", "caption": "The selcted variable is not logged!"},
-        {"code": 203, "icon": "error", "caption": "The selcted variable is not aggregated as counter!"}
+    "status": [
+        {
+            "code": 200,
+            "icon": "error",
+            "caption": "The selcted variable does not exist!"
+        },
+        {
+            "code": 201,
+            "icon": "error",
+            "caption": "The selcted variable is not numeric!"
+        },
+        {
+            "code": 202,
+            "icon": "error",
+            "caption": "The selcted variable is not logged!"
+        },
+        {
+            "code": 203,
+            "icon": "error",
+            "caption": "The selcted variable is not aggregated as counter!"
+        }
     ]
 }

@@ -3,10 +3,9 @@
     "name": "StromAbrechnungsModul",
     "type": 3,
     "vendor": "",
-    "aliases":
-    [
+    "aliases": [
         "StromAbrechnungsModul"
-    ],  
+    ],
     "parentRequirements": [],
     "childRequirements": [],
     "implemented": [],
