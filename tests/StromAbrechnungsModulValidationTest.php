@@ -8,8 +8,8 @@ class StromAbrechnungsModulValidationTest extends TestCaseSymconValidation
     {
         $this->validateLibrary(__DIR__ . '/..');
     }
-    public function testValidateStromAbrechnungsModulModule(): void
+    public function testValidatePowerBillingModuleModule(): void
     {
-        $this->validateModule(__DIR__ . '/../StromAbrechnungsModul');
+        $this->validateModule(__DIR__ . '/../PowerBillingModule');
     }
 }
