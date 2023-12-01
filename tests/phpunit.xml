@@ -6,7 +6,7 @@
   </php>
   <source>
     <include>
-      <directory suffix=".php">../StromabrechnungsModul</directory>
+      <directory suffix=".php">../PowerBillingModule</directory>
     </include>
   </source>
 </phpunit>

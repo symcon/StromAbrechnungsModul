@@ -1,14 +1,14 @@
 {
     "id": "{584619EE-28B5-5FE7-99CF-34AFC5E50F16}",
-    "name": "StromAbrechnungsModul",
+    "name": "PowerBillingModule",
     "type": 3,
     "vendor": "",
     "aliases": [
-        "StromAbrechnungsModul"
+        "PowerBillingModule"
     ],
     "parentRequirements": [],
     "childRequirements": [],
     "implemented": [],
     "prefix": "SAM",
-    "url": "https://github.com/TillBrede/StromAbrechnungsModul/tree/master/StromAbrechnungsModul"
+    "url": "https://www.symcon.de/en/service/documentation/module-reference/power-billing-module/"
 }
